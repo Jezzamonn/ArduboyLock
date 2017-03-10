@@ -1,6 +1,11 @@
 #include <Arduboy.h>
 #include <Keyboard.h>
 
+#include "bitmaps.h"
+
+#define LOCK_WIDTH 48
+#define LOCK_HEIGHT 56
+
 struct Keystate {
   bool a = false;
   bool b = false;
@@ -56,7 +61,8 @@ void loop() {
   
   arduboy.clearDisplay();
 
-  
+  arduboy.drawBitmap((WIDTH - LOCK_WIDTH) / 2, (HEIGHT - LOCK_HEIGHT) / 2,
+                lock, LOCK_WIDTH, LOCK_HEIGHT, WHITE);
   
   arduboy.display();
 
