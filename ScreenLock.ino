@@ -6,6 +6,8 @@
 #define LOCK_WIDTH 48
 #define LOCK_HEIGHT 56
 
+uint16_t frameCount = 0;
+
 struct Keystate {
   bool a = false;
   bool b = false;
@@ -66,6 +68,7 @@ void loop() {
   
   arduboy.display();
 
+  frameCount ++;
   prevKeys = curKeys;
 }
 
@@ -77,9 +80,9 @@ void drawLock() {
 }
 
 void drawBackground() {
-  for (int y = 0; y < HEIGHT; y ++) {
-    for (int x = 0; x < WIDTH; x ++) {
-      if (((x + y) & 0b111) == 0) {
+  for (uint8_t y = 0; y < HEIGHT; y ++) {
+    for (uint8_t x = 0; x < WIDTH; x ++) {
+      if (((x + y) & 0b111) == ((frameCount >> 2) & 0b111)) {
         arduboy.drawPixel(x, y, WHITE);
       }
     }
