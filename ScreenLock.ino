@@ -61,12 +61,29 @@ void loop() {
   
   arduboy.clearDisplay();
 
-  arduboy.drawBitmap((WIDTH - LOCK_WIDTH) / 2, (HEIGHT - LOCK_HEIGHT) / 2,
-                lock, LOCK_WIDTH, LOCK_HEIGHT, WHITE);
+  drawBackground();
+  drawLock();
   
   arduboy.display();
 
   prevKeys = curKeys;
+}
+
+void drawLock() {
+  arduboy.drawBitmap((WIDTH - LOCK_WIDTH) / 2, (HEIGHT - LOCK_HEIGHT) / 2,
+              lock_mask, LOCK_WIDTH, LOCK_HEIGHT, BLACK);
+  arduboy.drawBitmap((WIDTH - LOCK_WIDTH) / 2, (HEIGHT - LOCK_HEIGHT) / 2,
+              lock, LOCK_WIDTH, LOCK_HEIGHT, WHITE);
+}
+
+void drawBackground() {
+  for (int y = 0; y < HEIGHT; y ++) {
+    for (int x = 0; x < WIDTH; x ++) {
+      if (((x + y) & 0b111) == 0) {
+        arduboy.drawPixel(x, y, WHITE);
+      }
+    }
+  }
 }
 
 void lockScreen() {
