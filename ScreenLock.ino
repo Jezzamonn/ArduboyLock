@@ -44,12 +44,13 @@ void loop() {
   curKeys.up = arduboy.pressed(UP_BUTTON);
   curKeys.down = arduboy.pressed(DOWN_BUTTON);
 
-  if (!keyDown && curKeys.a || curKeys.b ||
-    curKeys.left || curKeys.right || curKeys.up || curKeys.down) {
+  if (!keyDown && (curKeys.a || curKeys.b ||
+    curKeys.left || curKeys.right || curKeys.up || curKeys.down)) {
 
     keyDown = true;
     startLock();
   }
+
   if (keyDown && !(curKeys.a || curKeys.b ||
     curKeys.left || curKeys.right || curKeys.up || curKeys.down)) {
 
@@ -94,6 +95,7 @@ void startLock() {
   Keyboard.press(KEY_LEFT_CTRL);
   Keyboard.press(KEY_LEFT_ALT);
   Keyboard.press('l');
+  arduboy.tunes.tone(785, 10);
 }
 
 void endLock() {
