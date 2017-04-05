@@ -22,6 +22,8 @@ Keystate curKeys;
 
 Arduboy arduboy;
 
+int keyDown = false;
+
 void setup() {
   // put your setup code here, to run once:
   arduboy.start();
@@ -42,23 +44,17 @@ void loop() {
   curKeys.up = arduboy.pressed(UP_BUTTON);
   curKeys.down = arduboy.pressed(DOWN_BUTTON);
 
-  if (curKeys.a && !prevKeys.a) {
-    lockScreen();
+  if (!keyDown && curKeys.a || curKeys.b ||
+    curKeys.left || curKeys.right || curKeys.up || curKeys.down) {
+
+    keyDown = true;
+    startLock();
   }
-  if (curKeys.b && !prevKeys.b) {
-    lockScreen();
-  }
-  if (curKeys.left && !prevKeys.left) {
-    lockScreen();
-  }
-  if (curKeys.right && !prevKeys.right) {
-    lockScreen();
-  }
-  if (curKeys.up && !prevKeys.up) {
-    lockScreen();
-  }
-  if (curKeys.down && !prevKeys.down) {
-    lockScreen();
+  if (keyDown && !(curKeys.a || curKeys.b ||
+    curKeys.left || curKeys.right || curKeys.up || curKeys.down)) {
+
+    keyDown = false;
+    endLock();
   }
   
   arduboy.clearDisplay();
@@ -68,7 +64,12 @@ void loop() {
   
   arduboy.display();
 
-  frameCount ++;
+  if (keyDown) {
+    frameCount -= 4;
+  }
+  else {
+    frameCount ++;
+  }
   prevKeys = curKeys;
 }
 
@@ -89,11 +90,13 @@ void drawBackground() {
   }
 }
 
-void lockScreen() {
+void startLock() {
   Keyboard.press(KEY_LEFT_CTRL);
   Keyboard.press(KEY_LEFT_ALT);
   Keyboard.press('l');
-  delay(100);
+}
+
+void endLock() {
   Keyboard.releaseAll();
 }
 
