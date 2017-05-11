@@ -22,7 +22,7 @@ Keystate curKeys;
 
 Arduboy arduboy;
 
-int keyDown = false;
+int lockKeyDown = false;
 
 void setup() {
   // put your setup code here, to run once:
@@ -44,18 +44,27 @@ void loop() {
   curKeys.up = arduboy.pressed(UP_BUTTON);
   curKeys.down = arduboy.pressed(DOWN_BUTTON);
 
-  if (!keyDown && (curKeys.a || curKeys.b ||
-    curKeys.left || curKeys.right || curKeys.up || curKeys.down)) {
-
-    keyDown = true;
+  if (!lockKeyDown && (curKeys.a || curKeys.b)) {
+    lockKeyDown = true;
     startLock();
   }
+  if (lockKeyDown && !(curKeys.a || curKeys.b)) {
+    lockKeyDown = false;
+    Keyboard.releaseAll();
+  }
 
-  if (keyDown && !(curKeys.a || curKeys.b ||
-    curKeys.left || curKeys.right || curKeys.up || curKeys.down)) {
+  if (!prevKeys.left && curKeys.left) {
+    startMoveLeft();
+  }
+  if (prevKeys.left && !curKeys.left) {
+    Keyboard.releaseAll();
+  }
 
-    keyDown = false;
-    endLock();
+  if (!prevKeys.right && curKeys.right) {
+    startMoveRight();
+  }
+  if (prevKeys.right && !curKeys.right) {
+    Keyboard.releaseAll();
   }
   
   arduboy.clearDisplay();
@@ -65,7 +74,7 @@ void loop() {
   
   arduboy.display();
 
-  if (keyDown) {
+  if (lockKeyDown || curKeys.left || curKeys.right) {
     frameCount -= 4;
   }
   else {
@@ -95,10 +104,18 @@ void startLock() {
   Keyboard.press(KEY_LEFT_CTRL);
   Keyboard.press(KEY_LEFT_ALT);
   Keyboard.press('l');
-  arduboy.tunes.tone(785, 10);
+  arduboy.tunes.tone(785, 20);
 }
 
-void endLock() {
-  Keyboard.releaseAll();
+void startMoveLeft() {
+  Keyboard.press(KEY_LEFT_CTRL);
+  Keyboard.press(KEY_LEFT_ALT);
+  Keyboard.press(KEY_LEFT_ARROW);
+}
+
+void startMoveRight() {
+  Keyboard.press(KEY_LEFT_CTRL);
+  Keyboard.press(KEY_LEFT_ALT);
+  Keyboard.press(KEY_RIGHT_ARROW);
 }
 
