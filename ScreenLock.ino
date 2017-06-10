@@ -54,16 +54,25 @@ void loop() {
   }
 
   if (!prevKeys.left && curKeys.left) {
-    startMoveLeft();
-  }
-  if (prevKeys.left && !curKeys.left) {
-    Keyboard.releaseAll();
+    startMove(KEY_LEFT_ARROW);
   }
 
   if (!prevKeys.right && curKeys.right) {
-    startMoveRight();
+    startMove(KEY_RIGHT_ARROW);
   }
-  if (prevKeys.right && !curKeys.right) {
+  
+  if (!prevKeys.up && curKeys.up) {
+    startMove(KEY_UP_ARROW);
+  }
+ 
+  if (!prevKeys.down && curKeys.down) {
+    startMove(KEY_DOWN_ARROW);
+  }
+
+  if ((prevKeys.left && !curKeys.left) ||
+      (prevKeys.right && !curKeys.right) ||
+      (prevKeys.up && !curKeys.up) ||
+      (prevKeys.down && !curKeys.down)) {
     Keyboard.releaseAll();
   }
   
@@ -119,3 +128,8 @@ void startMoveRight() {
   Keyboard.press(KEY_RIGHT_ARROW);
 }
 
+void startMove(int key) {
+  Keyboard.press(KEY_LEFT_CTRL);
+  Keyboard.press(KEY_LEFT_ALT);
+  Keyboard.press(key);
+}
