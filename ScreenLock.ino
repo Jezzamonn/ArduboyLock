@@ -8,6 +8,7 @@
 
 uint16_t frameCount = 0;
 uint16_t animateCount = 0;
+uint16_t lockCount = 0;
 
 struct Keystate {
   bool a = false;
@@ -80,13 +81,21 @@ void loop() {
   if (lockKeyDown || curKeys.left || curKeys.right || curKeys.up || curKeys.down) {
     animateCount = 30;
   }
+  if (lockKeyDown) {
+    lockCount = 30;
+  }
   
+  if (lockCount > 0) {
+    lockCount --;
+  }
   if (animateCount > 0) {
     animateCount --;
 
     arduboy.clearDisplay();
     if (animateCount > 0) {
       drawBackground();
+    }
+    if (lockCount > 0) {
       drawLock();
     }
     arduboy.display();
