@@ -47,7 +47,6 @@ void loop() {
 
   if (!lockKeyDown && (curKeys.a || curKeys.b)) {
     lockKeyDown = true;
-    animateCount = 30;
     startLock();
   }
   if (lockKeyDown && !(curKeys.a || curKeys.b)) {
@@ -56,22 +55,18 @@ void loop() {
   }
 
   if (!prevKeys.left && curKeys.left) {
-    animateCount = 30;
     startMove(KEY_LEFT_ARROW);
   }
 
   if (!prevKeys.right && curKeys.right) {
-    animateCount = 30;
     startMove(KEY_RIGHT_ARROW);
   }
   
   if (!prevKeys.up && curKeys.up) {
-    animateCount = 30;
     startMove(KEY_UP_ARROW);
   }
  
   if (!prevKeys.down && curKeys.down) {
-    animateCount = 30;
     startMove(KEY_DOWN_ARROW);
   }
 
@@ -81,17 +76,22 @@ void loop() {
       (prevKeys.down && !curKeys.down)) {
     Keyboard.releaseAll();
   }
-  
-  arduboy.clearDisplay();
-  if (animateCount > 0 || lockKeyDown || curKeys.left || curKeys.right || curKeys.up || curKeys.down) {
-    drawBackground();
-    drawLock();
-  }
-  arduboy.display();
 
+  if (lockKeyDown || curKeys.left || curKeys.right || curKeys.up || curKeys.down) {
+    animateCount = 30;
+  }
+  
   if (animateCount > 0) {
     animateCount --;
+
+    arduboy.clearDisplay();
+    if (animateCount > 0) {
+      drawBackground();
+      drawLock();
+    }
+    arduboy.display();
   }
+
   frameCount += 4;
 
   prevKeys = curKeys;
@@ -106,8 +106,12 @@ void drawLock() {
 
 void drawBackground() {
   for (uint8_t y = 0; y < HEIGHT; y ++) {
+    int8_t dy = y - HEIGHT / 2;
     for (uint8_t x = 0; x < WIDTH; x ++) {
-      if (((x + y) & 0b111) == ((frameCount >> 2) & 0b111)) {
+      int8_t dx = x - WIDTH / 2;
+
+      if (dx * dx + 2 * dy * dy < 160 * animateCount &&
+          ((x + y) & 0b111) == ((frameCount >> 2) & 0b111)) {
         arduboy.drawPixel(x, y, WHITE);
       }
     }
