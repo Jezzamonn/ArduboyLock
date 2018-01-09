@@ -7,6 +7,7 @@
 #define LOCK_HEIGHT 56
 
 uint16_t frameCount = 0;
+uint16_t animateCount = 0;
 
 struct Keystate {
   bool a = false;
@@ -46,6 +47,7 @@ void loop() {
 
   if (!lockKeyDown && (curKeys.a || curKeys.b)) {
     lockKeyDown = true;
+    animateCount = 30;
     startLock();
   }
   if (lockKeyDown && !(curKeys.a || curKeys.b)) {
@@ -54,18 +56,22 @@ void loop() {
   }
 
   if (!prevKeys.left && curKeys.left) {
+    animateCount = 30;
     startMove(KEY_LEFT_ARROW);
   }
 
   if (!prevKeys.right && curKeys.right) {
+    animateCount = 30;
     startMove(KEY_RIGHT_ARROW);
   }
   
   if (!prevKeys.up && curKeys.up) {
+    animateCount = 30;
     startMove(KEY_UP_ARROW);
   }
  
   if (!prevKeys.down && curKeys.down) {
+    animateCount = 30;
     startMove(KEY_DOWN_ARROW);
   }
 
@@ -77,18 +83,17 @@ void loop() {
   }
   
   arduboy.clearDisplay();
-
-  drawBackground();
-  drawLock();
-  
+  if (animateCount > 0 || lockKeyDown || curKeys.left || curKeys.right || curKeys.up || curKeys.down) {
+    drawBackground();
+    drawLock();
+  }
   arduboy.display();
 
-  if (lockKeyDown || curKeys.left || curKeys.right) {
-    frameCount -= 4;
+  if (animateCount > 0) {
+    animateCount --;
   }
-  else {
-    frameCount ++;
-  }
+  frameCount += 4;
+
   prevKeys = curKeys;
 }
 
