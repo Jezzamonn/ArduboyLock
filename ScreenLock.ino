@@ -134,18 +134,6 @@ void startLock() {
   arduboy.tunes.tone(785, 20);
 }
 
-void startMoveLeft() {
-  Keyboard.press(KEY_LEFT_CTRL);
-  Keyboard.press(KEY_LEFT_ALT);
-  Keyboard.press(KEY_LEFT_ARROW);
-}
-
-void startMoveRight() {
-  Keyboard.press(KEY_LEFT_CTRL);
-  Keyboard.press(KEY_LEFT_ALT);
-  Keyboard.press(KEY_RIGHT_ARROW);
-}
-
 void startMove(int key) {
   Keyboard.press(KEY_LEFT_CTRL);
   Keyboard.press(KEY_LEFT_ALT);

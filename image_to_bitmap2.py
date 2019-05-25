@@ -94,10 +94,6 @@ images_saved = 0
 for file in files:
     filepath = os.path.join('images', file)
     im = Image.open(filepath)
-    #if im.width != 8 or im.height != 8:
-        #continue #ignore invalid image
-        #raise ValueError('An image of an invalid size was found. '
-        #                 'All images need to be 8x8 pixels.', im)
     spritename = os.path.splitext(file)[0]
 
     print(spritename)
