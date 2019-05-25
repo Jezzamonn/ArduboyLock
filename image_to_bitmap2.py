@@ -39,6 +39,7 @@ some way of including the bitmap's dimensions.
 
 Changelog:
 v1.0 - First version. Works for 8x8 images only.
+v1.1 - Updated this so that it also works for larger images!
 """
 
 import os
