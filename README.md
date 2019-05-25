@@ -29,7 +29,7 @@ void startLock() {
 }
 ```
 
-`startMove` secnds CTRL, ALT and the arrow key corresponding the to the key on the D-pad.
+`startMove` sends CTRL, ALT and the arrow key corresponding the to the key on the D-pad.
 
 ```
 void startMove(int key) {
